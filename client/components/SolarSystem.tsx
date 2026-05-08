@@ -22,7 +22,7 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { Play, Pause, Plus, Zap } from "lucide-react";
+import { Play, Pause, Plus, Zap, ExternalLink, Loader2 } from "lucide-react";
 
 interface CelestialBody {
   id: string;
@@ -33,101 +33,10 @@ interface CelestialBody {
   speed: number;
   color: string;
   angle: number;
+  image?: string;
+  description?: string;
   parent?: string;
 }
-
-const PLANETS: CelestialBody[] = [
-  {
-    id: "sun",
-    name: "Sun",
-    type: "planet",
-    size: 1,
-    distance: 0,
-    speed: 0,
-    color: "#FDB813",
-    angle: 0,
-  },
-  {
-    id: "mercury",
-    name: "Mercury",
-    type: "planet",
-    size: 0.38,
-    distance: 3.8,
-    speed: 0.04,
-    color: "#8C7853",
-    angle: 0,
-  },
-  {
-    id: "venus",
-    name: "Venus",
-    type: "planet",
-    size: 0.95,
-    distance: 7.2,
-    speed: 0.015,
-    color: "#FFC649",
-    angle: 0,
-  },
-  {
-    id: "earth",
-    name: "Earth",
-    type: "planet",
-    size: 1,
-    distance: 10,
-    speed: 0.01,
-    color: "#4B9BFF",
-    angle: 0,
-  },
-  {
-    id: "mars",
-    name: "Mars",
-    type: "planet",
-    size: 0.53,
-    distance: 15.2,
-    speed: 0.008,
-    color: "#E27B58",
-    angle: 0,
-  },
-  {
-    id: "jupiter",
-    name: "Jupiter",
-    type: "planet",
-    size: 11.21,
-    distance: 52,
-    speed: 0.002,
-    color: "#DAA520",
-    angle: 0,
-  },
-  {
-    id: "saturn",
-    name: "Saturn",
-    type: "planet",
-    size: 9.45,
-    distance: 95,
-    speed: 0.0009,
-    color: "#FAD5A5",
-    angle: 0,
-  },
-  {
-    id: "uranus",
-    name: "Uranus",
-    type: "planet",
-    size: 4.01,
-    distance: 192,
-    speed: 0.0004,
-    color: "#4FD0E7",
-    angle: 0,
-  },
-  {
-    id: "neptune",
-    name: "Neptune",
-    type: "planet",
-    size: 3.88,
-    distance: 300,
-    speed: 0.0001,
-    color: "#4166F5",
-    angle: 0,
-  },
-];
 
 const CelestialObject = ({
   body,
@@ -175,7 +84,8 @@ const CelestialObject = ({
 };
 
 export default function SolarSystem() {
-  const [bodies, setBodies] = useState<CelestialBody[]>(PLANETS);
+  const [bodies, setBodies] = useState<CelestialBody[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [speed, setSpeed] = useState(1);
   const [isPlaying, setIsPlaying] = useState(true);
   const [selectedBody, setSelectedBody] = useState<CelestialBody | null>(null);
@@ -183,6 +93,31 @@ export default function SolarSystem() {
   const [newBodySize, setNewBodySize] = useState(0.5);
   const [newBodyDistance, setNewBodyDistance] = useState(50);
   const [newBodyColor, setNewBodyColor] = useState("#FF00FF");
+
+  // Load NASA celestial data on mount
+  useEffect(() => {
+    const fetchNASAData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("/api/nasa/celestials");
+        const data = await response.json();
+        if (data.success && data.data) {
+          setBodies(
+            data.data.map((body: any) => ({
+              ...body,
+              angle: Math.random() * Math.PI * 2,
+            }))
+          );
+        }
+      } catch (error) {
+        console.error("Failed to load NASA data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchNASAData();
+  }, []);
 
   const addCustomBody = () => {
     if (newBodyName.trim()) {
@@ -206,6 +141,16 @@ export default function SolarSystem() {
 
   return (
     <div className="w-full h-screen flex flex-col bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+      {/* Loading State */}
+      {isLoading && (
+        <div className="absolute inset-0 bg-slate-950/90 z-50 flex items-center justify-center">
+          <div className="text-center">
+            <Loader2 className="w-8 h-8 animate-spin text-cyan-500 mx-auto mb-4" />
+            <p className="text-white">Loading NASA celestial data...</p>
+          </div>
+        </div>
+      )}
+
       {/* Canvas */}
       <div className="flex-1 relative">
         <Canvas
@@ -459,31 +404,55 @@ export default function SolarSystem() {
                   {selectedBody.name}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2 text-xs">
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Type:</span>
-                  <span className="text-slate-300 capitalize">
-                    {selectedBody.type}
-                  </span>
+              <CardContent className="space-y-3 text-xs">
+                {selectedBody.description && (
+                  <div>
+                    <p className="text-slate-300 italic">
+                      {selectedBody.description}
+                    </p>
+                  </div>
+                )}
+
+                <div className="space-y-2 border-t border-slate-700 pt-2">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Type:</span>
+                    <span className="text-slate-300 capitalize">
+                      {selectedBody.type}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Size:</span>
+                    <span className="text-slate-300">
+                      {selectedBody.size.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Distance:</span>
+                    <span className="text-slate-300">
+                      {selectedBody.distance.toFixed(1)} AU
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Speed:</span>
+                    <span className="text-slate-300">
+                      {selectedBody.speed.toFixed(4)} °/frame
+                    </span>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Size:</span>
-                  <span className="text-slate-300">
-                    {selectedBody.size.toFixed(2)}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Distance:</span>
-                  <span className="text-slate-300">
-                    {selectedBody.distance.toFixed(1)} AU
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Speed:</span>
-                  <span className="text-slate-300">
-                    {selectedBody.speed.toFixed(4)} °/frame
-                  </span>
-                </div>
+
+                {selectedBody.image && (
+                  <div className="border-t border-slate-700 pt-2">
+                    <a
+                      href={selectedBody.image}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-cyan-400 hover:text-cyan-300 transition-colors"
+                    >
+                      <span>View NASA Image</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                )}
               </CardContent>
             </Card>
           )}

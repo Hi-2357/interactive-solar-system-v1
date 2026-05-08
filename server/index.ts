@@ -2,6 +2,11 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import {
+  handleNASACelestials,
+  handleNASANearEarthObjects,
+  handleNASAImageSearch,
+} from "./routes/nasa";
 
 export function createServer() {
   const app = express();
@@ -18,6 +23,11 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // NASA API routes
+  app.get("/api/nasa/celestials", handleNASACelestials);
+  app.get("/api/nasa/near-earth-objects", handleNASANearEarthObjects);
+  app.get("/api/nasa/images", handleNASAImageSearch);
 
   return app;
 }
