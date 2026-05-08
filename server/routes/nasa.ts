@@ -10,6 +10,14 @@ interface NASACelestialObject {
   color: string;
   image?: string;
   description?: string;
+  diameter?: number;
+  diameterKm?: number;
+  dayLength?: number;
+  yearLength?: number;
+  surfaceTemp?: number;
+  moonCount?: number;
+  orbitalSpeed?: number;
+  averageDistanceFromSun?: number;
 }
 
 const NASA_API_KEY = process.env.NASA_API_KEY || "DEMO_KEY";
@@ -24,9 +32,10 @@ const PLANET_DATA: NASACelestialObject[] = [
     distance: 0,
     speed: 0,
     color: "#FDB813",
-    image:
-      "https://images.nasa.gov/details-PIA00708.html",
+    image: "https://images.nasa.gov/details-PIA00708.html",
     description: "The star at the center of our solar system",
+    diameterKm: 1391000,
+    surfaceTemp: 5778,
   },
   {
     id: "mercury",
@@ -36,9 +45,15 @@ const PLANET_DATA: NASACelestialObject[] = [
     distance: 3.8,
     speed: 0.04,
     color: "#8C7853",
-    image:
-      "https://images.nasa.gov/details-PIA16077.html",
+    image: "https://images.nasa.gov/details-PIA16077.html",
     description: "The smallest planet in our solar system",
+    diameterKm: 4879,
+    dayLength: 58.65,
+    yearLength: 87.97,
+    surfaceTemp: 167,
+    moonCount: 0,
+    orbitalSpeed: 47.87,
+    averageDistanceFromSun: 57.9,
   },
   {
     id: "venus",
@@ -48,9 +63,15 @@ const PLANET_DATA: NASACelestialObject[] = [
     distance: 7.2,
     speed: 0.015,
     color: "#FFC649",
-    image:
-      "https://images.nasa.gov/details-PIA00144.html",
+    image: "https://images.nasa.gov/details-PIA00144.html",
     description: "The hottest planet in our solar system",
+    diameterKm: 12104,
+    dayLength: 243.02,
+    yearLength: 224.7,
+    surfaceTemp: 464,
+    moonCount: 0,
+    orbitalSpeed: 35.02,
+    averageDistanceFromSun: 108.2,
   },
   {
     id: "earth",
@@ -60,9 +81,15 @@ const PLANET_DATA: NASACelestialObject[] = [
     distance: 10,
     speed: 0.01,
     color: "#4B9BFF",
-    image:
-      "https://images.nasa.gov/details-ISS000-039E-000001.html",
+    image: "https://images.nasa.gov/details-ISS000-039E-000001.html",
     description: "Our home planet",
+    diameterKm: 12742,
+    dayLength: 23.93,
+    yearLength: 365.25,
+    surfaceTemp: 15,
+    moonCount: 1,
+    orbitalSpeed: 29.78,
+    averageDistanceFromSun: 149.6,
   },
   {
     id: "mars",
@@ -72,9 +99,15 @@ const PLANET_DATA: NASACelestialObject[] = [
     distance: 15.2,
     speed: 0.008,
     color: "#E27B58",
-    image:
-      "https://images.nasa.gov/details-PIA26085.html",
+    image: "https://images.nasa.gov/details-PIA26085.html",
     description: "The red planet",
+    diameterKm: 6779,
+    dayLength: 24.62,
+    yearLength: 686.98,
+    surfaceTemp: -65,
+    moonCount: 2,
+    orbitalSpeed: 24.07,
+    averageDistanceFromSun: 227.9,
   },
   {
     id: "jupiter",
@@ -84,9 +117,15 @@ const PLANET_DATA: NASACelestialObject[] = [
     distance: 52,
     speed: 0.002,
     color: "#DAA520",
-    image:
-      "https://images.nasa.gov/details-PIA32408.html",
+    image: "https://images.nasa.gov/details-PIA32408.html",
     description: "The largest planet in our solar system",
+    diameterKm: 139820,
+    dayLength: 9.93,
+    yearLength: 4332.59,
+    surfaceTemp: -108,
+    moonCount: 95,
+    orbitalSpeed: 13.07,
+    averageDistanceFromSun: 778.5,
   },
   {
     id: "saturn",
@@ -96,9 +135,15 @@ const PLANET_DATA: NASACelestialObject[] = [
     distance: 95,
     speed: 0.0009,
     color: "#FAD5A5",
-    image:
-      "https://images.nasa.gov/details-PIA26249.html",
+    image: "https://images.nasa.gov/details-PIA26249.html",
     description: "The ringed planet",
+    diameterKm: 116460,
+    dayLength: 10.66,
+    yearLength: 10759.22,
+    surfaceTemp: -140,
+    moonCount: 146,
+    orbitalSpeed: 9.68,
+    averageDistanceFromSun: 1434,
   },
   {
     id: "uranus",
@@ -108,9 +153,15 @@ const PLANET_DATA: NASACelestialObject[] = [
     distance: 192,
     speed: 0.0004,
     color: "#4FD0E7",
-    image:
-      "https://images.nasa.gov/details-PIA02231.html",
+    image: "https://images.nasa.gov/details-PIA02231.html",
     description: "An ice giant tilted on its side",
+    diameterKm: 50724,
+    dayLength: 17.24,
+    yearLength: 30688.5,
+    surfaceTemp: -195,
+    moonCount: 28,
+    orbitalSpeed: 6.81,
+    averageDistanceFromSun: 2873,
   },
   {
     id: "neptune",
@@ -120,9 +171,15 @@ const PLANET_DATA: NASACelestialObject[] = [
     distance: 300,
     speed: 0.0001,
     color: "#4166F5",
-    image:
-      "https://images.nasa.gov/details-PIA02231.html",
+    image: "https://images.nasa.gov/details-PIA02231.html",
     description: "The windiest planet in our solar system",
+    diameterKm: 49244,
+    dayLength: 16.11,
+    yearLength: 60182,
+    surfaceTemp: -200,
+    moonCount: 16,
+    orbitalSpeed: 5.43,
+    averageDistanceFromSun: 4495,
   },
 ];
 
@@ -139,6 +196,9 @@ const SATELLITE_DATA: NASACelestialObject[] = [
     color: "#C0C0C0",
     image: "https://images.nasa.gov/details-PIA00405.html",
     description: "Earth's only natural satellite",
+    diameterKm: 3474,
+    dayLength: 29.53,
+    orbitalSpeed: 1.022,
   },
   // Mars
   {
@@ -151,6 +211,9 @@ const SATELLITE_DATA: NASACelestialObject[] = [
     color: "#A9A9A9",
     image: "https://images.nasa.gov/details-PIA10368.html",
     description: "Larger moon of Mars",
+    diameterKm: 22,
+    dayLength: 0.32,
+    orbitalSpeed: 2.138,
   },
   {
     id: "deimos",
@@ -162,6 +225,9 @@ const SATELLITE_DATA: NASACelestialObject[] = [
     color: "#8B8B83",
     image: "https://images.nasa.gov/details-PIA07662.html",
     description: "Smaller moon of Mars",
+    diameterKm: 12,
+    dayLength: 1.26,
+    orbitalSpeed: 1.351,
   },
   // Jupiter
   {
@@ -174,6 +240,10 @@ const SATELLITE_DATA: NASACelestialObject[] = [
     color: "#FFD700",
     image: "https://images.nasa.gov/details-PIA02532.html",
     description: "Most volcanically active body in the solar system",
+    diameterKm: 3643,
+    dayLength: 1.77,
+    orbitalSpeed: 17.33,
+    surfaceTemp: -110,
   },
   {
     id: "europa",
@@ -185,6 +255,10 @@ const SATELLITE_DATA: NASACelestialObject[] = [
     color: "#E8E8E8",
     image: "https://images.nasa.gov/details-PIA00502.html",
     description: "Icy moon with subsurface ocean",
+    diameterKm: 3122,
+    dayLength: 3.55,
+    orbitalSpeed: 13.74,
+    surfaceTemp: -110,
   },
   {
     id: "ganymede",
@@ -196,6 +270,10 @@ const SATELLITE_DATA: NASACelestialObject[] = [
     color: "#D2B48C",
     image: "https://images.nasa.gov/details-PIA00383.html",
     description: "Largest moon in the solar system",
+    diameterKm: 5268,
+    dayLength: 7.15,
+    orbitalSpeed: 10.88,
+    surfaceTemp: -110,
   },
   {
     id: "callisto",
@@ -207,6 +285,10 @@ const SATELLITE_DATA: NASACelestialObject[] = [
     color: "#5F4F4F",
     image: "https://images.nasa.gov/details-PIA01637.html",
     description: "Heavily cratered moon of Jupiter",
+    diameterKm: 4821,
+    dayLength: 16.69,
+    orbitalSpeed: 8.2,
+    surfaceTemp: -110,
   },
   // Saturn
   {
@@ -219,6 +301,10 @@ const SATELLITE_DATA: NASACelestialObject[] = [
     color: "#FFA500",
     image: "https://images.nasa.gov/details-PIA17471.html",
     description: "Only moon with substantial atmosphere",
+    diameterKm: 5149,
+    dayLength: 15.95,
+    orbitalSpeed: 5.57,
+    surfaceTemp: -179,
   },
   {
     id: "rhea",
@@ -230,6 +316,10 @@ const SATELLITE_DATA: NASACelestialObject[] = [
     color: "#D3D3D3",
     image: "https://images.nasa.gov/details-PIA07640.html",
     description: "Second-largest moon of Saturn",
+    diameterKm: 1527,
+    dayLength: 4.52,
+    orbitalSpeed: 8.48,
+    surfaceTemp: -174,
   },
   {
     id: "iapetus",
@@ -241,6 +331,10 @@ const SATELLITE_DATA: NASACelestialObject[] = [
     color: "#696969",
     image: "https://images.nasa.gov/details-PIA07677.html",
     description: "Moon with distinctive two-tone coloration",
+    diameterKm: 1469,
+    dayLength: 79.33,
+    orbitalSpeed: 3.28,
+    surfaceTemp: -128,
   },
   // Uranus
   {
@@ -253,6 +347,10 @@ const SATELLITE_DATA: NASACelestialObject[] = [
     color: "#B0C4DE",
     image: "https://images.nasa.gov/details-PIA02313.html",
     description: "Largest moon of Uranus",
+    diameterKm: 1578,
+    dayLength: 8.7,
+    orbitalSpeed: 3.64,
+    surfaceTemp: -213,
   },
   {
     id: "oberon",
@@ -264,6 +362,10 @@ const SATELLITE_DATA: NASACelestialObject[] = [
     color: "#778899",
     image: "https://images.nasa.gov/details-PIA02315.html",
     description: "Second-largest moon of Uranus",
+    diameterKm: 1523,
+    dayLength: 13.46,
+    orbitalSpeed: 3.15,
+    surfaceTemp: -213,
   },
   // Neptune
   {
@@ -276,6 +378,10 @@ const SATELLITE_DATA: NASACelestialObject[] = [
     color: "#87CEEB",
     image: "https://images.nasa.gov/details-PIA02317.html",
     description: "Largest moon of Neptune with geysers",
+    diameterKm: 2707,
+    dayLength: 5.88,
+    orbitalSpeed: 4.39,
+    surfaceTemp: -235,
   },
 ];
 
@@ -290,6 +396,11 @@ const ASTEROID_DATA: NASACelestialObject[] = [
     color: "#A9A9A9",
     image: "https://images.nasa.gov/details-PIA20347.html",
     description: "Largest object in the asteroid belt",
+    diameterKm: 946,
+    dayLength: 9.07,
+    yearLength: 1680,
+    orbitalSpeed: 17.88,
+    averageDistanceFromSun: 413.9,
   },
   {
     id: "vesta",
@@ -301,6 +412,11 @@ const ASTEROID_DATA: NASACelestialObject[] = [
     color: "#8B8B83",
     image: "https://images.nasa.gov/details-PIA15826.html",
     description: "Second-largest asteroid",
+    diameterKm: 525,
+    dayLength: 5.34,
+    yearLength: 1325,
+    orbitalSpeed: 19.26,
+    averageDistanceFromSun: 383.2,
   },
   {
     id: "pallas",
@@ -312,6 +428,11 @@ const ASTEROID_DATA: NASACelestialObject[] = [
     color: "#808080",
     image: "https://images.nasa.gov/details-PIA13612.html",
     description: "Third-largest asteroid",
+    diameterKm: 582,
+    dayLength: 7.81,
+    yearLength: 1684,
+    orbitalSpeed: 17.65,
+    averageDistanceFromSun: 414.5,
   },
 ];
 

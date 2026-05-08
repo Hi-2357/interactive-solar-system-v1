@@ -46,7 +46,37 @@ interface CelestialBody {
   image?: string;
   description?: string;
   parent?: string;
+  diameterKm?: number;
+  dayLength?: number;
+  yearLength?: number;
+  surfaceTemp?: number;
+  moonCount?: number;
+  orbitalSpeed?: number;
+  averageDistanceFromSun?: number;
 }
+
+const OrbitTrack = ({ distance }: { distance: number }) => {
+  if (distance === 0) return null;
+
+  const points = [];
+  for (let i = 0; i <= 64; i++) {
+    const angle = (i / 64) * Math.PI * 2;
+    points.push(new THREE.Vector3(Math.cos(angle) * distance, 0, Math.sin(angle) * distance));
+  }
+
+  return (
+    <line>
+      <bufferGeometry attach="geometry" args={[new THREE.BufferGeometry().setFromPoints(points)]} />
+      <lineBasicMaterial
+        attach="material"
+        color="#444"
+        transparent
+        opacity={0.4}
+        linewidth={1}
+      />
+    </line>
+  );
+};
 
 const ParentChildSystem = ({
   parent,
@@ -65,6 +95,9 @@ const ParentChildSystem = ({
 }) => {
   return (
     <group>
+      {/* Show orbit tracks for parent */}
+      {parent.distance > 0 && <OrbitTrack distance={parent.distance} />}
+
       <CelestialObjectMesh
         body={parent}
         speed={isPlaying ? speed : 0}
@@ -72,14 +105,17 @@ const ParentChildSystem = ({
         isSelected={selectedId === parent.id}
       />
       {children.map((child) => (
-        <OrbitingSatellite
-          key={child.id}
-          parent={parent}
-          satellite={child}
-          speed={isPlaying ? speed : 0}
-          onObjectClick={onObjectClick}
-          isSelected={selectedId === child.id}
-        />
+        <group key={child.id}>
+          {/* Show orbit tracks for satellites */}
+          {child.distance > 0 && <OrbitTrack distance={child.distance} />}
+          <OrbitingSatellite
+            parent={parent}
+            satellite={child}
+            speed={isPlaying ? speed : 0}
+            onObjectClick={onObjectClick}
+            isSelected={selectedId === child.id}
+          />
+        </group>
       ))}
     </group>
   );
