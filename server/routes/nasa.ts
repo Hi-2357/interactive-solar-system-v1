@@ -126,6 +126,159 @@ const PLANET_DATA: NASACelestialObject[] = [
   },
 ];
 
+// Satellite/Moon data
+const SATELLITE_DATA: NASACelestialObject[] = [
+  // Earth
+  {
+    id: "moon",
+    name: "Moon",
+    type: "moon",
+    size: 0.27,
+    distance: 0.26,
+    speed: 0.1,
+    color: "#C0C0C0",
+    image: "https://images.nasa.gov/details-PIA00405.html",
+    description: "Earth's only natural satellite",
+  },
+  // Mars
+  {
+    id: "phobos",
+    name: "Phobos",
+    type: "moon",
+    size: 0.13,
+    distance: 0.9,
+    speed: 0.3,
+    color: "#A9A9A9",
+    image: "https://images.nasa.gov/details-PIA10368.html",
+    description: "Larger moon of Mars",
+  },
+  {
+    id: "deimos",
+    name: "Deimos",
+    type: "moon",
+    size: 0.08,
+    distance: 1.5,
+    speed: 0.15,
+    color: "#8B8B83",
+    image: "https://images.nasa.gov/details-PIA07662.html",
+    description: "Smaller moon of Mars",
+  },
+  // Jupiter
+  {
+    id: "io",
+    name: "Io",
+    type: "moon",
+    size: 0.45,
+    distance: 6,
+    speed: 0.18,
+    color: "#FFD700",
+    image: "https://images.nasa.gov/details-PIA02532.html",
+    description: "Most volcanically active body in the solar system",
+  },
+  {
+    id: "europa",
+    name: "Europa",
+    type: "moon",
+    size: 0.38,
+    distance: 9.5,
+    speed: 0.1,
+    color: "#E8E8E8",
+    image: "https://images.nasa.gov/details-PIA00502.html",
+    description: "Icy moon with subsurface ocean",
+  },
+  {
+    id: "ganymede",
+    name: "Ganymede",
+    type: "moon",
+    size: 0.5,
+    distance: 15,
+    speed: 0.08,
+    color: "#D2B48C",
+    image: "https://images.nasa.gov/details-PIA00383.html",
+    description: "Largest moon in the solar system",
+  },
+  {
+    id: "callisto",
+    name: "Callisto",
+    type: "moon",
+    size: 0.48,
+    distance: 26,
+    speed: 0.03,
+    color: "#5F4F4F",
+    image: "https://images.nasa.gov/details-PIA01637.html",
+    description: "Heavily cratered moon of Jupiter",
+  },
+  // Saturn
+  {
+    id: "titan",
+    name: "Titan",
+    type: "moon",
+    size: 0.4,
+    distance: 12,
+    speed: 0.1,
+    color: "#FFA500",
+    image: "https://images.nasa.gov/details-PIA17471.html",
+    description: "Only moon with substantial atmosphere",
+  },
+  {
+    id: "rhea",
+    name: "Rhea",
+    type: "moon",
+    size: 0.2,
+    distance: 20,
+    speed: 0.05,
+    color: "#D3D3D3",
+    image: "https://images.nasa.gov/details-PIA07640.html",
+    description: "Second-largest moon of Saturn",
+  },
+  {
+    id: "iapetus",
+    name: "Iapetus",
+    type: "moon",
+    size: 0.18,
+    distance: 32,
+    speed: 0.02,
+    color: "#696969",
+    image: "https://images.nasa.gov/details-PIA07677.html",
+    description: "Moon with distinctive two-tone coloration",
+  },
+  // Uranus
+  {
+    id: "titania",
+    name: "Titania",
+    type: "moon",
+    size: 0.2,
+    distance: 8,
+    speed: 0.1,
+    color: "#B0C4DE",
+    image: "https://images.nasa.gov/details-PIA02313.html",
+    description: "Largest moon of Uranus",
+  },
+  {
+    id: "oberon",
+    name: "Oberon",
+    type: "moon",
+    size: 0.19,
+    distance: 12,
+    speed: 0.08,
+    color: "#778899",
+    image: "https://images.nasa.gov/details-PIA02315.html",
+    description: "Second-largest moon of Uranus",
+  },
+  // Neptune
+  {
+    id: "triton",
+    name: "Triton",
+    type: "moon",
+    size: 0.27,
+    distance: 10,
+    speed: 0.12,
+    color: "#87CEEB",
+    image: "https://images.nasa.gov/details-PIA02317.html",
+    description: "Largest moon of Neptune with geysers",
+  },
+];
+
 const ASTEROID_DATA: NASACelestialObject[] = [
   {
     id: "ceres",
@@ -165,7 +318,7 @@ const ASTEROID_DATA: NASACelestialObject[] = [
 export const handleNASACelestials: RequestHandler = async (_req, res) => {
   try {
     // Combine all celestial objects
-    const allObjects = [...PLANET_DATA, ...ASTEROID_DATA];
+    const allObjects = [...PLANET_DATA, ...ASTEROID_DATA, ...SATELLITE_DATA];
 
     res.json({
       success: true,
